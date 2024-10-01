@@ -1,0 +1,115 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "ca88ffb2-d254-45fd-9a44-0186eabdb6e4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.ensemble import GradientBoostingRegressor\n",
+    "from sklearn.metrics import mean_squared_error\n",
+    "import pickle\n",
+    "\n",
+    "# Load the cleaned training data\n",
+    "train_cleaned = pd.read_csv('../data/train_cleaned.csv')\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "2abc7754-1ece-4b1b-ac5c-22de6a16f257",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Separate features and target variable\n",
+    "X = train_cleaned.drop('SalePrice', axis=1)\n",
+    "y = train_cleaned['SalePrice']\n",
+    "\n",
+    "# Split the data into training and validation sets\n",
+    "X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=0.2, random_state=42)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "6d86a63f-2b7a-476d-8074-fa7dbd487cd2",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Gradient Boosting RMSE on Validation Set: 0.010358479518198866\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Initialize and train the model (Gradient Boosting Regressor)\n",
+    "gb_model = GradientBoostingRegressor(n_estimators=100, random_state=42)\n",
+    "gb_model.fit(X_train, y_train)\n",
+    "\n",
+    "# Evaluate the model's performance on the validation set\n",
+    "preds = gb_model.predict(X_valid)\n",
+    "rmse = np.sqrt(mean_squared_error(y_valid, preds))\n",
+    "print(f\"Gradient Boosting RMSE on Validation Set: {rmse}\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "b0ef52db-c07c-4826-8e3b-f81e1aba46cb",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Model saved successfully in outputs/model.pkl\n"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "# Save the trained model to the outputs/ folder as model.pkl\n",
+    "with open('../outputs/model.pkl', 'wb') as file:\n",
+    "    pickle.dump(gb_model, file)\n",
+    "\n",
+    "print(\"Model saved successfully in outputs/model.pkl\")\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4741092f-1e1d-4ec1-b6a3-79877fc79957",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

@@ -24,7 +24,7 @@ rmse = np.sqrt(mean_squared_error(y_valid, preds))
 print(f"Gradient Boosting RMSE on Validation Set: {rmse}")
 
 # Save the trained model to a .pkl file
-with open('model.pkl', 'wb') as file:
+with open('../outputs/model.pkl', 'wb') as file:
     pickle.dump(gb_model, file)
 
 print("Model saved successfully as model.pkl")
